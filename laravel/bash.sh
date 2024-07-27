@@ -240,20 +240,20 @@ http {
 
 EOF
 
-# Create the default.conf file
+# Create the default conf file
 cat <<EOT > /etc/nginx/sites-available/$DOMAIN.conf
 server { 
     listen 80 default_server;
     listen [::]:80 default_server;
-    server_name _;
+    server_name $DOMAIN;
 
-    root /usr/share/nginx/html/laravel/public;
+    root /usr/share/nginx/html/$DOMAIN/public;
     index index.php index.html index.htm;
 
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-XSS-Protection "1; mode=block"; 
     add_header X-Content-Type-Options "nosniff"; 
-    client_max_body_size 500M; 
+    client_max_body_size 128M; 
     charset utf-8;
 
     location / { 
@@ -287,7 +287,7 @@ server {
         deny all;
     }
 
-    error_log /var/log/nginx/error.log warn;
+    error_log /var/log/nginx/$DOMAIN.error.log warn;
 
 }
 
@@ -311,11 +311,11 @@ cd /usr/share/nginx/html
 composer create-project --prefer-dist laravel/laravel laravel "$LARAVEL.*" || { echo "Laravel installation failed"; exit 1; }
 
 # Set proper file permissions
-sudo chown -R www-data:www-data /usr/share/nginx/html/laravel
+sudo chown -R www-data:www-data /usr/share/nginx/html/$DOMAIN
 
 # Set proper file permissions for Laravel
-sudo chmod -R 755 /usr/share/nginx/html/laravel/storage
-sudo chmod -R 755 /usr/share/nginx/html/laravel/bootstrap/cache
+sudo chmod -R 755 /usr/share/nginx/html/$DOMAIN/storage
+sudo chmod -R 755 /usr/share/nginx/html/$DOMAIN/bootstrap/cache
 
 # Ensure that your firewall is allowing HTTP (port 80) and HTTPS (port 443) traffic
 sudo firewall-cmd --permanent --add-service=http
