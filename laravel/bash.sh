@@ -308,7 +308,7 @@ curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
 
 # Create a new Laravel application
 cd /usr/share/nginx/html
-composer create-project --prefer-dist laravel/laravel laravel "$LARAVEL.*" || { echo "Laravel installation failed"; exit 1; }
+composer create-project --prefer-dist laravel/laravel $DOMAIN "$LARAVEL.*" || { echo "Laravel installation failed"; exit 1; }
 
 # Set proper file permissions
 sudo chown -R www-data:www-data /usr/share/nginx/html/$DOMAIN
