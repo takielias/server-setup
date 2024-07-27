@@ -1,4 +1,4 @@
-# server-setup
+# Server Setup On Ubuntu 22.04
 
 ## Quick Start
 
